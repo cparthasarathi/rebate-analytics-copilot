@@ -35,7 +35,7 @@ The scope above describes the **intended POC design**. Only the code and SQL act
 
 ## Architecture
 
-![Rebate Analytics and AI Copilot Solution Architecture](docs/architecture.png)
+![Rebate Analytics and AI Copilot Solution Architecture](docs/architecture_new.png)
 
 The solution ingests rebate and claims data through Azure Data Factory
 and ADLS Gen2, processes it through Snowflake Bronze, Silver and Gold
