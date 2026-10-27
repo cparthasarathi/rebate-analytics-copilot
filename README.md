@@ -35,36 +35,16 @@ The scope above describes the **intended POC design**. Only the code and SQL act
 
 ## Architecture
 
-The diagram below shows the target logical architecture represented by the starter project. It is a design view, not a deployment diagram.
+![Rebate Analytics and AI Copilot Solution Architecture](docs/architecture.png)
 
-```mermaid
-flowchart TD
-    SRC[Approved source systems\nSaaS APIs • ERP/contract extracts\nSFTP drops • manual spreadsheets]
-    ADF[Azure Data Factory\nOrchestration and ingestion]
-    ADLS[ADLS Gen2 landing\nPartitioned files and audit copy]
-    RRAW[Restricted raw area\nTight access and approved retention]
-    TOK[Reviewed tokenization boundary]
-    ING[Snowflake ingestion\nCOPY INTO / Snowpipe where appropriate]
-    BR[BRONZE\nRaw source-aligned data]
-    SI[SILVER\nConformed and validated data]
-    GO[GOLD\nApproved commercial rebate model\nand secure views]
-    SEM[Governed semantic model\nApproved metrics and query rules]
-    BI[BI / commercial reporting]
-    COP[Copilot / text-to-SQL\nScoped identity • approved SQL]
-    RAG[Approved glossary and policy corpus\nRAG only]
-    REST[(RESTRICTED_DATA\nIdentifier crosswalks)]
+The solution ingests rebate and claims data through Azure Data Factory
+and ADLS Gen2, processes it through Snowflake Bronze, Silver and Gold
+layers, and exposes governed analytics through Power BI and an AI Copilot.
 
-    SRC --> ADF --> ADLS
-    ADLS --> ING --> BR --> SI --> GO --> SEM
-    ADLS --> RRAW --> TOK --> ING
-    SEM --> BI
-    SEM --> COP
-    RAG --> COP
-    TOK -. restricted mapping retained separately .-> REST
-
-    REST -. no access .-> BI
-    REST -. no access .-> COP
-```
+Sensitive data is segregated and protected through tokenization,
+role-based access controls, masking, and audit policies. The Copilot
+uses approved Gold-layer data and approved glossary and policy content;
+it does not access the restricted data layer.
 
 ### Architecture and security principles
 
